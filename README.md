@@ -27,7 +27,7 @@ A Chrome extension that plays custom sound effects when keywords appear in your 
 
 ## License
 
-MIT
+It's [MIT](LICENSE)
 
 ---
 
