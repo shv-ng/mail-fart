@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Mail Fart</title>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+    :root {
+      --bg: #0f0f0f;
+      --surface: #1a1a1a;
+      --border: #2e2e2e;
+      --accent: #c8ff00;
+      --muted: #888;
+      --text: #f0f0f0;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      width: 260px;
+      padding: 20px;
+      text-align: center;
+    }
+    .icon { font-size: 36px; margin-bottom: 10px; }
+    .title {
+      font-family: 'Space Mono', monospace;
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.08em;
+      margin-bottom: 6px;
+    }
+    .desc {
+      font-size: 11px;
+      color: var(--muted);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .open-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0f0f0f;
+      border: none;
+      border-radius: 7px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 10px;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .open-btn:hover { background: #d9ff1a; }
+    .status {
+      margin-top: 14px;
+      font-size: 10px;
+      color: var(--muted);
+    }
+    .status span { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <div class="icon">💨</div>
+    <div class="title">MAIL FART</div>
+    <div class="desc">Sound effects for your Gmail keywords. Open settings to manage keywords and sounds.</div>
+    <button class="open-btn" id="openSettings">⚙ OPEN SETTINGS</button>
+    <div class="status" id="statusLine">Loading...</div>
+
+    <script src="popup.js">
+    </script>
+  </body>
+</html>

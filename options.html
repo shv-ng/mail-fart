@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Mail Fart — Settings</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --surface: #161616;
+      --surface2: #1f1f1f;
+      --border: #2a2a2a;
+      --accent: #c8ff00;
+      --danger: #ff4545;
+      --text: #f0f0f0;
+      --muted: #777;
+      --radius: 10px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Rubik', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* Layout */
+    .layout {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 40px 24px 60px;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      margin-bottom: 40px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-icon { font-size: 40px; }
+
+    .header-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 0.05em;
+    }
+
+    .header-sub {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 3px;
+    }
+
+    /* Two-column layout */
+    .columns {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    @media (max-width: 680px) {
+      .columns { grid-template-columns: 1fr; }
+    }
+
+    /* Panel */
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 22px;
+    }
+
+    .panel-title {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+
+    /* Form elements */
+    .form-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 5px;
+      letter-spacing: 0.05em;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      color: var(--text);
+      font-family: 'Rubik', sans-serif;
+      font-size: 14px;
+      padding: 10px 13px;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+
+    input[type="text"]::placeholder { color: var(--muted); }
+    input[type="text"]:focus { border-color: var(--accent); }
+
+    /* Drop zone */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      border-radius: 8px;
+      padding: 20px 16px;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.15s, background 0.15s;
+      user-select: none;
+    }
+
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: rgba(200,255,0,0.04);
+    }
+
+    .drop-zone.has-file {
+      border-color: var(--accent);
+      border-style: solid;
+    }
+
+    .drop-zone-icon { font-size: 24px; margin-bottom: 6px; }
+
+    .drop-zone-text {
+      font-size: 12px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    .drop-zone-text .highlight {
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .drop-zone.has-file .drop-zone-text {
+      color: var(--text);
+    }
+
+    /* Hidden real file input — triggered programmatically */
+    #soundUpload { display: none; }
+
+    /* Save button */
+    .save-btn {
+      width: 100%;
+      background: var(--accent);
+      color: #0d0d0d;
+      border: none;
+      border-radius: 8px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      padding: 11px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.1s;
+      margin-top: 4px;
+    }
+
+    .save-btn:hover { background: #d9ff1a; }
+    .save-btn:active { transform: scale(0.98); }
+    .save-btn:disabled {
+      background: var(--surface2);
+      color: var(--muted);
+      cursor: not-allowed;
+    }
+
+    /* Keyword list */
+    .kw-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .keyword-item {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      animation: fadeIn 0.2s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-5px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .kw-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 8px;
+    }
+
+    .kw-word {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .kw-actions { display: flex; gap: 6px; }
+
+    .btn-sm {
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: var(--muted);
+      font-size: 11px;
+      padding: 3px 9px;
+      cursor: pointer;
+      font-family: 'Space Mono', monospace;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+
+    .btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+
+    .btn-del { color: var(--danger); }
+    .btn-del:hover { border-color: var(--danger) !important; color: var(--danger) !important; background: rgba(255,69,69,0.07); }
+
+    /* Sound chips */
+    .sound-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+
+    .chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      font-size: 11px;
+      padding: 3px 10px 3px 8px;
+      color: var(--muted);
+      max-width: 200px;
+    }
+
+    .chip-name {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .chip-del {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 12px;
+      padding: 0;
+      line-height: 1;
+      flex-shrink: 0;
+      transition: color 0.1s;
+    }
+
+    .chip-del:hover { color: var(--danger); }
+
+    .chip-play {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 11px;
+      padding: 0;
+      flex-shrink: 0;
+      transition: color 0.1s;
+    }
+    .chip-play:hover { color: var(--accent); }
+
+    /* Empty state */
+    .empty {
+      text-align: center;
+      padding: 30px 20px;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.7;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+    }
+
+    .empty-icon { font-size: 32px; margin-bottom: 8px; }
+
+    /* Toast */
+    #toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(12px);
+      background: var(--surface);
+      border: 1px solid var(--accent);
+      color: var(--accent);
+      font-size: 12px;
+      font-family: 'Space Mono', monospace;
+      padding: 9px 18px;
+      border-radius: 24px;
+      opacity: 0;
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+      z-index: 999;
+    }
+
+    #toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+
+    @keyframes chipPulse {
+      0%,100% { border-color: var(--accent); }
+      50% { border-color: transparent; }
+    }
+
+    .chip.playing { animation: chipPulse 0.6s ease infinite; }
+  </style>
+</head>
+<body>
+<div class="layout">
+
+  <div class="header">
+    <div class="header-icon">💨</div>
+    <div>
+      <div class="header-title">MAIL FART — Settings</div>
+      <div class="header-sub">Assign custom sound effects to Gmail keywords</div>
+    </div>
+  </div>
+
+  <div class="columns">
+
+    <!-- Add keyword panel -->
+    <div class="panel">
+      <div class="panel-title">Add / Update Keyword</div>
+
+      <div class="form-group">
+        <label>KEYWORD</label>
+        <input type="text" id="keywordInput" placeholder="e.g. URGENT" autocomplete="off" />
+      </div>
+
+      <div class="form-group">
+        <label>SOUND FILE</label>
+        <!-- Hidden real input -->
+        <input type="file" id="soundUpload" accept="audio/*" />
+        <!-- Visual drop zone -->
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-icon">🎵</div>
+          <div class="drop-zone-text" id="dropText">
+            <span class="highlight">Click to choose</span> or drag & drop<br>
+            Any audio format · Any size
+          </div>
+        </div>
+      </div>
+
+      <button class="save-btn" id="saveBtn" disabled>+ ADD SOUND</button>
+    </div>
+
+    <!-- Keyword list panel -->
+    <div class="panel">
+      <div class="panel-title">Saved Keywords</div>
+      <div class="kw-list" id="keywordList"></div>
+    </div>
+
+  </div>
+</div>
+
+<div id="toast"></div>
+<script src="options.js"></script>
+</body>
+</html>
