@@ -2,7 +2,10 @@
 
 A Chrome extension that plays custom sound effects when keywords appear in your Gmail messages.
 
----
+
+https://github.com/user-attachments/assets/d9623423-aa71-4edf-aba2-6caca7d09d54
+
+
 
 ## Features
 
